@@ -1,11 +1,16 @@
 version: 2
 
 sources:
-  - name: jaffle_shop
+  - name: JAFFLE_SHOP
     database: raw
-    schema: jaffle_shop
+    schema: JAFFLE_SHOP
     tables:
       - name: customers
+        columns:
+        - name: id
+          tests:
+           - unique
+           - not null
       - name: orders
         loaded_at_field: _etl_loaded_at
         freshness:
@@ -19,6 +24,20 @@ models:
         tests:
           - unique
           - not_null
-          
+  - name: stg_orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values:
+                - completed
+                - shipped
+                - returned
+                - return_pending
+                - placed   
 
               
